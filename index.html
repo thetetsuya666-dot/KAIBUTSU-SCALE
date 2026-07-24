@@ -2,173 +2,187 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
-
-  <meta name="theme-color" content="#0a9eaa">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta
-    name="apple-mobile-web-app-status-bar-style"
-    content="default"
-  >
-  <meta
-    name="apple-mobile-web-app-title"
-    content="開物 計量"
-  >
-
-  <title>開物 計量アプリ</title>
-
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="開物 計量">
+  <title>株式会社開物｜計量登録</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.0.0">
 </head>
-
 <body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">株式会社開物</p>
+      <h1>計量登録</h1>
+    </div>
+    <button id="settings-open-button" class="icon-button" type="button" aria-label="設定を開く">⚙️</button>
+  </header>
+
   <main class="container">
-    <header>
-      <h1>株式会社開物</h1>
-      <p>計量登録</p>
-    </header>
+    <nav class="tabs" aria-label="画面切替">
+      <button class="tab-button active" data-tab="register" type="button">計量登録</button>
+      <button class="tab-button" data-tab="records" type="button">明細</button>
+      <button class="tab-button" data-tab="settings" type="button">設定</button>
+    </nav>
 
-    <section class="card">
-      <label for="customer">取引先</label>
-      <input
-        id="customer"
-        type="text"
-        placeholder="例：トレジャーファクトリー郡山店"
-      >
-    </section>
+    <section id="tab-register" class="tab-panel active">
+      <div class="card">
+        <label for="customer">取引先・荷主名</label>
+        <input id="customer" type="text" inputmode="text" placeholder="例：〇〇リサイクル店">
+      </div>
 
-    <section class="card">
-      <h2>品目を選択</h2>
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">商品</p>
+            <h2>ジャンルを選択</h2>
+          </div>
+          <button id="quick-add-product-button" class="small-button" type="button">商品追加</button>
+        </div>
+        <div id="category-buttons" class="category-grid"></div>
+      </div>
 
-      <div class="category-grid">
-        <button
-          class="category-button selected"
-          data-name="雑貨"
-          data-price="30"
-        >
-          雑貨<br>
-          <span>30円/kg</span>
-        </button>
+      <div class="card">
+        <p class="section-kicker">状態</p>
+        <h2>ランクを選択</h2>
+        <div id="rank-buttons" class="rank-grid"></div>
+      </div>
 
-        <button
-          class="category-button"
-          data-name="食器"
-          data-price="30"
-        >
-          食器<br>
-          <span>30円/kg</span>
-        </button>
+      <div class="card calculation-card">
+        <div class="selected-summary">
+          <div>
+            <span>商品</span>
+            <strong id="selected-name">未選択</strong>
+          </div>
+          <div>
+            <span>基準単価</span>
+            <strong><span id="selected-price">0</span>円/kg</strong>
+          </div>
+          <div>
+            <span>ランク</span>
+            <strong id="selected-rank">未選択</strong>
+          </div>
+          <div>
+            <span>支払率</span>
+            <strong><span id="selected-rate">0</span>%</strong>
+          </div>
+        </div>
 
-        <button
-          class="category-button"
-          data-name="釣具"
-          data-price="100"
-        >
-          釣具<br>
-          <span>100円/kg</span>
-        </button>
+        <label for="weight">重量</label>
+        <div class="weight-input-wrap">
+          <input id="weight" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00">
+          <span>kg</span>
+        </div>
 
-        <button
-          class="category-button"
-          data-name="オーディオ"
-          data-price="100"
-        >
-          オーディオ<br>
-          <span>100円/kg</span>
-        </button>
+        <div class="amount-breakdown">
+          <div><span>基準金額</span><strong><span id="base-amount">0</span>円</strong></div>
+          <div><span>減額</span><strong>-<span id="discount-amount">0</span>円</strong></div>
+          <div class="grand-total"><span>買取金額</span><strong><span id="calculated-amount">0</span>円</strong></div>
+        </div>
 
-        <button
-          class="category-button"
-          data-name="ぬいぐるみ"
-          data-price="80"
-        >
-          ぬいぐるみ<br>
-          <span>80円/kg</span>
-        </button>
-
-        <button
-          class="category-button"
-          data-name="贈答品"
-          data-price="100"
-        >
-          贈答品<br>
-          <span>100円/kg</span>
-        </button>
+        <button id="register-button" class="primary-button" type="button">登録する</button>
       </div>
     </section>
 
-    <section class="card">
-      <label for="weight">重量</label>
+    <section id="tab-records" class="tab-panel">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">登録済み</p>
+            <h2>明細一覧</h2>
+          </div>
+          <button id="clear-button" class="danger-outline-button" type="button">全削除</button>
+        </div>
 
-      <div class="weight-row">
-        <input
-          id="weight"
-          type="number"
-          inputmode="decimal"
-          min="0"
-          step="0.01"
-          placeholder="0.00"
-        >
-        <span>kg</span>
+        <div class="summary-grid">
+          <div><span>合計重量</span><strong id="total-weight">0.00 kg</strong></div>
+          <div><span>合計金額</span><strong id="total-amount">0円</strong></div>
+        </div>
+
+        <div class="export-actions">
+          <button id="export-csv-button" class="secondary-button" type="button">CSV保存</button>
+          <button id="backup-button" class="secondary-button" type="button">設定・明細を保存</button>
+          <label class="secondary-button file-label">
+            復元
+            <input id="restore-input" type="file" accept=".json,application/json">
+          </label>
+        </div>
+
+        <p id="empty-message" class="empty-message">まだ明細はありません。</p>
+        <div id="record-list" class="record-list"></div>
       </div>
-
-      <div class="price-details">
-        <p>
-          品目：
-          <strong id="selected-name">雑貨</strong>
-        </p>
-
-        <p>
-          単価：
-          <strong id="selected-price">30</strong>
-          円/kg
-        </p>
-
-        <p class="amount">
-          金額：
-          <strong id="calculated-amount">0</strong>
-          円
-        </p>
-      </div>
-
-      <button id="register-button" class="register-button">
-        登録する
-      </button>
     </section>
 
-    <section class="card">
-      <div class="list-heading">
-        <h2>登録済み明細</h2>
-        <button id="clear-button" class="small-button">
-          全削除
-        </button>
+    <section id="tab-settings" class="tab-panel">
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">商品マスター</p>
+            <h2>商品・単価設定</h2>
+          </div>
+          <button id="add-product-button" class="small-button" type="button">追加</button>
+        </div>
+        <div id="product-settings-list" class="settings-list"></div>
       </div>
 
-      <p id="empty-message">
-        まだ登録されていません。
-      </p>
+      <div class="card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">状態マスター</p>
+            <h2>ランク・支払率設定</h2>
+          </div>
+          <button id="add-rank-button" class="small-button" type="button">追加</button>
+        </div>
+        <p class="help-text">支払率100%は減額なし、80%は20%減額です。</p>
+        <div id="rank-settings-list" class="settings-list"></div>
+      </div>
 
-      <div id="record-list"></div>
-    </section>
-
-    <section class="card totals">
-      <p>
-        合計重量
-        <strong id="total-weight">0.00 kg</strong>
-      </p>
-
-      <p>
-        合計金額
-        <strong id="total-amount">0円</strong>
-      </p>
+      <div class="card">
+        <h2>データ管理</h2>
+        <p class="help-text">設定はこのiPhone・PCのブラウザ内に保存されます。機種変更前は必ずバックアップしてください。</p>
+        <div class="stack-actions">
+          <button id="reset-settings-button" class="danger-outline-button" type="button">初期設定に戻す</button>
+        </div>
+      </div>
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="edit-dialog">
+    <form method="dialog" id="edit-form">
+      <div class="dialog-header">
+        <h2 id="dialog-title">編集</h2>
+        <button class="icon-button" value="cancel" aria-label="閉じる">✕</button>
+      </div>
+      <input type="hidden" id="edit-type">
+      <input type="hidden" id="edit-id">
+
+      <label for="edit-name">名称</label>
+      <input id="edit-name" type="text" required>
+
+      <div id="price-field">
+        <label for="edit-price">単価（円/kg）</label>
+        <input id="edit-price" type="number" min="0" step="1" inputmode="numeric">
+      </div>
+
+      <div id="rate-field">
+        <label for="edit-rate">支払率（%）</label>
+        <input id="edit-rate" type="number" min="0" max="100" step="1" inputmode="numeric">
+      </div>
+
+      <label for="edit-note">説明</label>
+      <input id="edit-note" type="text" placeholder="例：傷や汚れあり">
+
+      <div class="dialog-actions">
+        <button value="cancel" class="secondary-button">キャンセル</button>
+        <button id="save-edit-button" value="default" class="primary-button">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js?v=2.0.0" defer></script>
 </body>
 </html>
