@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#0a9eaa">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+  >
+  <meta
+    name="apple-mobile-web-app-title"
+    content="開物 計量"
+  >
+
+  <title>開物 計量アプリ</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      <h1>株式会社開物</h1>
+      <p>計量登録</p>
+    </header>
+
+    <section class="card">
+      <label for="customer">取引先</label>
+      <input
+        id="customer"
+        type="text"
+        placeholder="例：トレジャーファクトリー郡山店"
+      >
+    </section>
+
+    <section class="card">
+      <h2>品目を選択</h2>
+
+      <div class="category-grid">
+        <button
+          class="category-button selected"
+          data-name="雑貨"
+          data-price="30"
+        >
+          雑貨<br>
+          <span>30円/kg</span>
+        </button>
+
+        <button
+          class="category-button"
+          data-name="食器"
+          data-price="30"
+        >
+          食器<br>
+          <span>30円/kg</span>
+        </button>
+
+        <button
+          class="category-button"
+          data-name="釣具"
+          data-price="100"
+        >
+          釣具<br>
+          <span>100円/kg</span>
+        </button>
+
+        <button
+          class="category-button"
+          data-name="オーディオ"
+          data-price="100"
+        >
+          オーディオ<br>
+          <span>100円/kg</span>
+        </button>
+
+        <button
+          class="category-button"
+          data-name="ぬいぐるみ"
+          data-price="80"
+        >
+          ぬいぐるみ<br>
+          <span>80円/kg</span>
+        </button>
+
+        <button
+          class="category-button"
+          data-name="贈答品"
+          data-price="100"
+        >
+          贈答品<br>
+          <span>100円/kg</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
+      <label for="weight">重量</label>
+
+      <div class="weight-row">
+        <input
+          id="weight"
+          type="number"
+          inputmode="decimal"
+          min="0"
+          step="0.01"
+          placeholder="0.00"
+        >
+        <span>kg</span>
+      </div>
+
+      <div class="price-details">
+        <p>
+          品目：
+          <strong id="selected-name">雑貨</strong>
+        </p>
+
+        <p>
+          単価：
+          <strong id="selected-price">30</strong>
+          円/kg
+        </p>
+
+        <p class="amount">
+          金額：
+          <strong id="calculated-amount">0</strong>
+          円
+        </p>
+      </div>
+
+      <button id="register-button" class="register-button">
+        登録する
+      </button>
+    </section>
+
+    <section class="card">
+      <div class="list-heading">
+        <h2>登録済み明細</h2>
+        <button id="clear-button" class="small-button">
+          全削除
+        </button>
+      </div>
+
+      <p id="empty-message">
+        まだ登録されていません。
+      </p>
+
+      <div id="record-list"></div>
+    </section>
+
+    <section class="card totals">
+      <p>
+        合計重量
+        <strong id="total-weight">0.00 kg</strong>
+      </p>
+
+      <p>
+        合計金額
+        <strong id="total-amount">0円</strong>
+      </p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

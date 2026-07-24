@@ -1,0 +1,10 @@
+{
+  "name": "株式会社開物 計量アプリ",
+  "short_name": "開物 計量",
+  "description": "株式会社開物の買取・計量記録アプリ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f6",
+  "theme_color": "#0a9eaa",
+  "lang": "ja"
+}
