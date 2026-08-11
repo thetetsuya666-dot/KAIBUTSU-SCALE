@@ -6,7 +6,13 @@ import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCKy1aUU0Ep8VyNdX7oZkZGlotFwKOSSQo",
   authDomain: "kaibutsu-scale.firebaseapp.com",
@@ -18,7 +24,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
+const db = getFirestore(app);
+window.kaibutsuFirebase = {
+  app,
+  auth,
+  db,
+  doc,
+  getDoc,
+  setDoc,
+  onSnapshot
+};
 // -----------------------------
 // ログイン画面
 // -----------------------------
