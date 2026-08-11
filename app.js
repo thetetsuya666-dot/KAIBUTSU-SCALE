@@ -81,6 +81,7 @@ function saveAll() {
 const CLOUD_COLLECTION = "kaibutsuScale";
 const CLOUD_DOCUMENT = "shared";
 
+let unsubscribeCloudSync = null;
 function startCloudSync() {
   const {
     db,
