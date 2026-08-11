@@ -8,7 +8,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCKy1aUU0Ep8VyNdX7oZkZGlotFwK0SSQo",
+  apiKey: "AIzaSyCKy1aUU0Ep8VyNdX7oZkZGlotFwKOSSQo",
   authDomain: "kaibutsu-scale.firebaseapp.com",
   projectId: "kaibutsu-scale",
   storageBucket: "kaibutsu-scale.firebasestorage.app",
