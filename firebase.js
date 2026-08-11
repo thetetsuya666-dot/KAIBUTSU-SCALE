@@ -238,7 +238,11 @@ onAuthStateChanged(auth, (user) => {
       uid: user.uid,
       email: user.email
     };
-
+document.dispatchEvent(
+  new CustomEvent("kaibutsu-auth-changed", {
+    detail: { user: window.kaibutsuUser }
+  })
+);
     console.log("KAIBUTSU SCALE ログイン:", user.email);
   } else {
     authScreen.style.display = "flex";
@@ -246,5 +250,10 @@ onAuthStateChanged(auth, (user) => {
     userEmail.textContent = "";
 
     window.kaibutsuUser = null;
+    document.dispatchEvent(
+  new CustomEvent("kaibutsu-auth-changed", {
+    detail: { user: null }
+  })
+);
   }
 });
