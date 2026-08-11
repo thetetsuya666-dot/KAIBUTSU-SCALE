@@ -37,10 +37,28 @@ const $ = (id) => document.getElementById(id);
 
 document.addEventListener("DOMContentLoaded", init);
 
-function init() {
+async function init() {
   bindTabs();
   bindActions();
   renderAll();
+
+  await waitForFirebase();
+  startCloudSync();
+}
+
+function waitForFirebase() {
+  return new Promise((resolve) => {
+    const timer = setInterval(() => {
+      if (
+        window.kaibutsuFirebase &&
+        window.kaibutsuFirebase.db &&
+        window.kaibutsuUser
+      ) {
+        clearInterval(timer);
+        resolve();
+      }
+    }, 100);
+  });
 }
 
 function loadArray(key, fallback) {
@@ -57,11 +75,140 @@ function structuredCloneSafe(value) {
 }
 
 function saveAll() {
-  localStorage.setItem(STORAGE_KEYS.products, JSON.stringify(products));
-  localStorage.setItem(STORAGE_KEYS.ranks, JSON.stringify(ranks));
-  localStorage.setItem(STORAGE_KEYS.records, JSON.stringify(records));
+  saveLocalOnly();
+  saveCloud();
+}
+const CLOUD_COLLECTION = "kaibutsuScale";
+const CLOUD_DOCUMENT = "shared";
+
+function startCloudSync() {
+  const {
+    db,
+    doc,
+    getDoc,
+    setDoc,
+    onSnapshot
+  } = window.kaibutsuFirebase;
+
+  const sharedRef = doc(
+    db,
+    CLOUD_COLLECTION,
+    CLOUD_DOCUMENT
+  );
+
+  getDoc(sharedRef)
+    .then(async (snapshot) => {
+      if (!snapshot.exists()) {
+        console.log("初回クラウド登録を開始します");
+
+        await setDoc(sharedRef, {
+          products,
+          ranks,
+          records,
+          updatedAt: new Date().toISOString(),
+          updatedBy: window.kaibutsuUser?.email || ""
+        });
+
+        console.log("初回クラウド登録完了");
+      }
+    })
+    .catch((error) => {
+      console.error("Firestore初期確認エラー:", error);
+    });
+
+  onSnapshot(
+    sharedRef,
+    (snapshot) => {
+      if (!snapshot.exists()) {
+        return;
+      }
+
+      const data = snapshot.data();
+
+      if (Array.isArray(data.products)) {
+        products = data.products;
+      }
+
+      if (Array.isArray(data.ranks)) {
+        ranks = data.ranks;
+      }
+
+      if (Array.isArray(data.records)) {
+        records = data.records;
+      }
+
+      selectedProductId =
+        products.find((item) => item.id === selectedProductId)?.id ??
+        products[0]?.id ??
+        null;
+
+      selectedRankId =
+        ranks.find((item) => item.id === selectedRankId)?.id ??
+        ranks[0]?.id ??
+        null;
+
+      saveLocalOnly();
+      renderAll();
+
+      console.log("Firestoreから共有データを受信しました");
+    },
+    (error) => {
+      console.error("Firestore同期エラー:", error);
+    }
+  );
 }
 
+function saveLocalOnly() {
+  localStorage.setItem(
+    STORAGE_KEYS.products,
+    JSON.stringify(products)
+  );
+
+  localStorage.setItem(
+    STORAGE_KEYS.ranks,
+    JSON.stringify(ranks)
+  );
+
+  localStorage.setItem(
+    STORAGE_KEYS.records,
+    JSON.stringify(records)
+  );
+}
+
+async function saveCloud() {
+  if (
+    !window.kaibutsuFirebase ||
+    !window.kaibutsuUser
+  ) {
+    return;
+  }
+
+  const {
+    db,
+    doc,
+    setDoc
+  } = window.kaibutsuFirebase;
+
+  const sharedRef = doc(
+    db,
+    CLOUD_COLLECTION,
+    CLOUD_DOCUMENT
+  );
+
+  try {
+    await setDoc(sharedRef, {
+      products,
+      ranks,
+      records,
+      updatedAt: new Date().toISOString(),
+      updatedBy: window.kaibutsuUser?.email || ""
+    });
+
+    console.log("Firestoreへ保存しました");
+  } catch (error) {
+    console.error("Firestore保存エラー:", error);
+  }
+}
 function bindTabs() {
   document.querySelectorAll(".tab-button").forEach((button) => {
     button.addEventListener("click", () => showTab(button.dataset.tab));
