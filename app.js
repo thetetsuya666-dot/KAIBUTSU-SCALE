@@ -37,13 +37,25 @@ const $ = (id) => document.getElementById(id);
 
 document.addEventListener("DOMContentLoaded", init);
 
-async function init() {
+function init() {
   bindTabs();
   bindActions();
   renderAll();
 
-  await waitForFirebase();
-  startCloudSync();
+  document.addEventListener("kaibutsu-auth-changed", (event) => {
+    if (unsubscribeCloudSync) {
+      unsubscribeCloudSync();
+      unsubscribeCloudSync = null;
+    }
+
+    if (event.detail.user && window.kaibutsuFirebase?.db) {
+      startCloudSync();
+    }
+  });
+
+  if (window.kaibutsuUser && window.kaibutsuFirebase?.db) {
+    startCloudSync();
+  }
 }
 
 function waitForFirebase() {
