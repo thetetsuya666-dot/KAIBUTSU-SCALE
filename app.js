@@ -121,7 +121,7 @@ function startCloudSync() {
       console.error("Firestore初期確認エラー:", error);
     });
 
-  onSnapshot(
+  unsubscribeCloudSync = onSnapshot(
     sharedRef,
     (snapshot) => {
       if (!snapshot.exists()) {
