@@ -83,6 +83,10 @@ const CLOUD_DOCUMENT = "shared";
 
 let unsubscribeCloudSync = null;
 function startCloudSync() {
+    if (unsubscribeCloudSync) {
+    unsubscribeCloudSync();
+    unsubscribeCloudSync = null;
+  }
   const {
     db,
     doc,
