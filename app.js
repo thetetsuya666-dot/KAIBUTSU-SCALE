@@ -7,14 +7,22 @@ const STORAGE_KEYS = {
 };
 
 const DEFAULT_PRODUCTS = [
-  { id: "goods", name: "雑貨", price: 30, note: "未選別雑貨" },
-  { id: "fishing", name: "釣具", price: 100, note: "竿・リール・小物" },
-  { id: "plush", name: "ぬいぐるみ", price: 80, note: "" },
-  { id: "audio", name: "オーディオ", price: 100, note: "" },
-  { id: "small-appliance", name: "小型家電", price: 50, note: "" },
-  { id: "kitchen", name: "キッチン雑貨", price: 60, note: "" },
-  { id: "bag", name: "バッグ", price: 30, note: "" },
-  { id: "farm-tools", name: "農具", price: 40, note: "" }
+  { id: "goods", name: "雑貨", price: 30, category: "雑貨類", note: "未選別雑貨" },
+  { id: "fishing", name: "釣具", price: 100, category: "その他", note: "竿・リール・小物" },
+  { id: "plush", name: "ぬいぐるみ", price: 80, category: "雑貨類", note: "" },
+  { id: "audio", name: "オーディオ", price: 100, category: "その他", note: "" },
+  { id: "small-appliance", name: "小型家電", price: 50, category: "その他", note: "" },
+  { id: "kitchen", name: "キッチン雑貨", price: 60, category: "雑貨類", note: "" },
+  { id: "bag", name: "バッグ", price: 30, category: "雑貨類", note: "" },
+  { id: "farm-tools", name: "農具", price: 40, category: "その他", note: "" }
+];
+
+const PRODUCT_CATEGORIES = [
+  "家具類",
+  "食器類",
+  "雑貨類",
+  "その他",
+  "楽器類"
 ];
 
 const DEFAULT_RANKS = [
