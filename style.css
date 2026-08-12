@@ -440,3 +440,41 @@ dialog form { padding: 18px; }
   .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rank-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+.product-category-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.product-category-tab {
+  padding: 10px 16px;
+  border: 1px solid #d0d7de;
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.product-category-tab.selected {
+  background: #0a84ff;
+  color: #fff;
+  border-color: #0a84ff;
+}
+
+.product-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 700px) {
+  .product-category-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-category-tab {
+    flex: 1 1 auto;
+  }
+}
