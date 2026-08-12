@@ -527,6 +527,14 @@ function openEditDialog(type, id = "") {
   $("edit-rate").value = !isProduct ? (item?.rate ?? "") : "";
   $("edit-note").value = item?.note ?? "";
 
+  $("edit-category").value = isProduct
+  ? (item?.category ?? "雑貨類")
+  : "";
+
+  $("category-field").style.display = isProduct
+  ? "block"
+  : "none";
+
   $("price-field").style.display = isProduct ? "block" : "none";
   $("rate-field").style.display = isProduct ? "none" : "block";
 
