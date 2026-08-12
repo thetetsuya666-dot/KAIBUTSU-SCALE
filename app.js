@@ -16,7 +16,7 @@ const DEFAULT_PRODUCTS = [
   { id: "bag", name: "バッグ", price: 30, category: "雑貨類", note: "" },
   { id: "farm-tools", name: "農具", price: 40, category: "その他", note: "" }
 ];
-
+let selectedProductCategory = "雑貨類";
 const PRODUCT_CATEGORIES = [
   "家具類",
   "食器類",
@@ -296,21 +296,86 @@ function renderProductButtons() {
   const container = $("category-buttons");
   container.innerHTML = "";
 
-  products.forEach((product) => {
+  // カテゴリタブ
+  const tabs = document.createElement("div");
+  tabs.className = "product-category-tabs";
+
+  PRODUCT_CATEGORIES.forEach((category) => {
+    const tab = document.createElement("button");
+    tab.type = "button";
+    tab.className = "product-category-tab";
+
+    if (category === selectedProductCategory) {
+      tab.classList.add("selected");
+    }
+
+    tab.textContent = category;
+
+    tab.addEventListener("click", () => {
+      selectedProductCategory = category;
+
+      const categoryProducts = products.filter(
+        (product) =>
+          (product.category ?? "その他") === category
+      );
+
+      if (
+        categoryProducts.length > 0 &&
+        !categoryProducts.some(
+          (product) => product.id === selectedProductId
+        )
+      ) {
+        selectedProductId = categoryProducts[0].id;
+      }
+
+      renderProductButtons();
+      updateCalculation();
+    });
+
+    tabs.appendChild(tab);
+  });
+
+  container.appendChild(tabs);
+
+  // 選択中カテゴリの商品だけ表示
+  const productGrid = document.createElement("div");
+  productGrid.className = "product-category-grid";
+
+  const visibleProducts = products.filter(
+    (product) =>
+      (product.category ?? "その他") ===
+      selectedProductCategory
+  );
+
+  visibleProducts.forEach((product) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "category-button";
-    button.classList.toggle("selected", product.id === selectedProductId);
-    button.innerHTML = `<strong>${escapeHtml(product.name)}</strong><span>${number(product.price)}円/kg${product.note ? `・${escapeHtml(product.note)}` : ""}</span>`;
+
+    button.classList.toggle(
+      "selected",
+      product.id === selectedProductId
+    );
+
+    button.innerHTML = `
+      <strong>${escapeHtml(product.name)}</strong>
+      <span>
+        ${number(product.price)}円/kg
+        ${product.note ? `・${escapeHtml(product.note)}` : ""}
+      </span>
+    `;
+
     button.addEventListener("click", () => {
       selectedProductId = product.id;
       renderProductButtons();
       updateCalculation();
     });
-    container.appendChild(button);
-  });
-}
 
+    productGrid.appendChild(button);
+  });
+
+  container.appendChild(productGrid);
+}
 function renderRankButtons() {
   const container = $("rank-buttons");
   container.innerHTML = "";
