@@ -453,15 +453,45 @@ function renderProductSettings() {
   const container = $("product-settings-list");
   container.innerHTML = "";
 
-  products.forEach((product, index) => {
-    container.appendChild(createSettingRow({
-      title: product.name,
-      subtitle: `${number(product.price)}円/kg${product.note ? `・${product.note}` : ""}`,
-      onEdit: () => openEditDialog("product", product.id),
-      onDelete: () => deleteSetting("product", product.id),
-      onUp: index > 0 ? () => moveItem("product", index, -1) : null,
-      onDown: index < products.length - 1 ? () => moveItem("product", index, 1) : null
-    }));
+  PRODUCT_CATEGORIES.forEach((category) => {
+    const categoryProducts = products.filter(
+      (product) =>
+        (product.category ?? "その他") === category
+    );
+
+    if (categoryProducts.length === 0) return;
+
+    const heading = document.createElement("h3");
+    heading.className = "product-category-title";
+    heading.textContent = category;
+    container.appendChild(heading);
+
+    categoryProducts.forEach((product) => {
+      const index = products.findIndex(
+        (entry) => entry.id === product.id
+      );
+
+      container.appendChild(
+        createSettingRow({
+          title: product.name,
+          subtitle:
+            `${number(product.price)}円/kg` +
+            `${product.note ? `・${product.note}` : ""}`,
+          onEdit: () =>
+            openEditDialog("product", product.id),
+          onDelete: () =>
+            deleteSetting("product", product.id),
+          onUp:
+            index > 0
+              ? () => moveItem("product", index, -1)
+              : null,
+          onDown:
+            index < products.length - 1
+              ? () => moveItem("product", index, 1)
+              : null,
+        })
+      );
+    });
   });
 }
 
