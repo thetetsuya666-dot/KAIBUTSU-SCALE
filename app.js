@@ -549,6 +549,7 @@ function saveEdit(event) {
   const id = $("edit-id").value;
   const name = $("edit-name").value.trim();
   const note = $("edit-note").value.trim();
+  const category = $("edit-category").value;
 
   if (!name) return showToast("名称を入力してください");
 
@@ -558,9 +559,20 @@ function saveEdit(event) {
 
     if (id) {
       const item = products.find((entry) => entry.id === id);
-      Object.assign(item, { name, price, note });
+     Object.assign(item, {
+  name,
+  price,
+  category,
+  note
+});
     } else {
-      products.push({ id: createId(), name, price, note });
+     products.push({
+  id: createId(),
+  name,
+  price,
+  category,
+  note
+});
       selectedProductId = products.at(-1).id;
     }
   } else {
