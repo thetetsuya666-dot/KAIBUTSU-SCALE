@@ -254,6 +254,13 @@ function showTab(tabName) {
 
 function bindActions() {
   $("settings-open-button").addEventListener("click", () => showTab("settings"));
+    $("mode-scale-button").addEventListener("click", () => {
+    setTransactionMode("scale");
+  });
+
+  $("mode-estimate-button").addEventListener("click", () => {
+    setTransactionMode("estimate");
+  });
   $("quick-add-product-button").addEventListener("click", () => openEditDialog("product"));
   $("add-product-button").addEventListener("click", () => openEditDialog("product"));
   $("add-rank-button").addEventListener("click", () => openEditDialog("rank"));
