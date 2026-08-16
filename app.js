@@ -305,7 +305,7 @@ function setTransactionMode(mode) {
 
   customerCard.hidden = false;
     estimateActions.hidden = true;
-　}
+  }
 }
 function renderAll() {
   normalizeSelections();
