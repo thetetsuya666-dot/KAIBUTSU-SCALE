@@ -28,6 +28,24 @@
     </nav>
 
     <section id="tab-register" class="tab-panel active">
+            <div class="card">
+        <p class="section-kicker">取引モード</p>
+        <h2>今回の取引</h2>
+
+        <div class="mode-switch">
+          <button id="mode-scale-button" class="secondary-button active" type="button">
+            通常計量
+          </button>
+
+          <button id="mode-estimate-button" class="secondary-button" type="button">
+            買取見積
+          </button>
+        </div>
+
+        <p id="mode-description" class="help-text">
+          通常の計量・買取登録を行います。
+        </p>
+      </div>
       <div class="card">
         <label for="customer">取引先・荷主名</label>
         <input id="customer" type="text" inputmode="text" placeholder="例：〇〇リサイクル店">
