@@ -296,13 +296,12 @@ function setTransactionMode(mode) {
   description.textContent =
     "商品を計量しながら買取見積を作成します。顧客登録は買取成立後に行います。";
 
-  customerCard.style.display = "none";
+ customerCard.hidden = true;
 } else {
   description.textContent =
     "通常の計量・買取登録を行います。";
 
-  customerCard.style.display = "";
-}
+  customerCard.hidden = false;
 }
 function renderAll() {
   normalizeSelections();
