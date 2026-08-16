@@ -288,6 +288,7 @@ function setTransactionMode(mode) {
   const estimateButton = $("mode-estimate-button");
   const description = $("mode-description");
   const customerCard = $("customer-card");
+  const estimateActions = $("estimate-actions");
 
   scaleButton.classList.toggle("active", mode === "scale");
   estimateButton.classList.toggle("active", mode === "estimate");
@@ -297,11 +298,13 @@ function setTransactionMode(mode) {
     "商品を計量しながら買取見積を作成します。顧客登録は買取成立後に行います。";
 
  customerCard.hidden = true;
+    estimateActions.hidden = false;
 } else {
   description.textContent =
     "通常の計量・買取登録を行います。";
 
   customerCard.hidden = false;
+    estimateActions.hidden = true;
 }
 function renderAll() {
   normalizeSelections();
