@@ -279,7 +279,26 @@ function bindActions() {
 
   $("edit-form").addEventListener("submit", saveEdit);
 }
+let transactionMode = "scale";
 
+function setTransactionMode(mode) {
+  transactionMode = mode;
+
+  const scaleButton = $("mode-scale-button");
+  const estimateButton = $("mode-estimate-button");
+  const description = $("mode-description");
+
+  scaleButton.classList.toggle("active", mode === "scale");
+  estimateButton.classList.toggle("active", mode === "estimate");
+
+  if (mode === "estimate") {
+    description.textContent =
+      "商品を計量しながら買取見積を作成します。顧客登録は買取成立後に行います。";
+  } else {
+    description.textContent =
+      "通常の計量・買取登録を行います。";
+  }
+}
 function renderAll() {
   normalizeSelections();
   renderProductButtons();
